@@ -1,6 +1,8 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+
 
 url = 'http://www.yurugp.jp/ranking/?rank=1_200&year=2018'
 
@@ -9,4 +11,6 @@ soup = BeautifulSoup(response.text,'lxml')
 img_urls = soup.find_all('a', href=re.compile(r'../character/detail.php\?id=\d{8}'))
 print(img_urls)
 for url in img_urls:
-    print(url.get('href'))
+    url = url.get('href')
+    abs_url = urljoin('http://www.yurugp.jp/',url)
+    print(abs_url)
