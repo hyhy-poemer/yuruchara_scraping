@@ -6,7 +6,7 @@ session = requests.Session()
 
 def main():
     """  
-    クローラーのメイン処理
+    クローラーのメイン処理，画像を保存
     """
     # ゆるキャラグランプリの HP
     url = "http://www.yurugp.jp/"
@@ -32,13 +32,19 @@ def rank_year(links):
         link = link.get('href')
         r = session.get('link')
         soup = BeautifulSoup(r)
-        urls = soup.find_all('a', href=re.compile(r'http://www.yurugp.jp/vote/detail.php?id=\d{8}'))
-    
-    return urls
+        rank_links = soup.find_all('option', value=re.compile(r'rank=\d+_\d{3}&year=20\d{2}'))
+        rank_links_unique = list(set(rank_links)) #重複を削除
+
+        for rank_link in rank_links_unique:
+            response = session.get('http://www.yurugp.jp/ranking/'+str(rank_link))
+            img_soup = BeautifulSoup(response)
+            img_urls = img_soup.find_all('a', href=re.compile(r'http://www.yurugp.jp/vote/detail.php?id=\d{8}'))
+
+    return img_urls
 
 def get_img_url(link):
     """
-     ゆるキャラ個別のページから画像をソースを抽出
+     ゆるキャラ個別のページから画像のソースを抽出
     """
     img_url = link.get('href')
     img_r = requests.get('img_url')
