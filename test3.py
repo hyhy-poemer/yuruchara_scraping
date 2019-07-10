@@ -7,12 +7,12 @@ url = 'http://www.yurugp.jp/ranking/?year=2018'
 # PATH = './Users/hyhy/Documents/YURUCHARA_GANs/Scraping/scraping_env/IMG'
 
 response = requests.get(url)
-soup = BeautifulSoup(response.text,'lxml')
-links = soup.find_all('img', src=re.compile('^http://www.yurugp.jp/img/uploads/character'))
+soup = BeautifulSoup(response.text, 'lxml')
+links = soup.find_all('img', src=re.compile(
+    '^http://www.yurugp.jp/img/uploads/character'))
 for link in links:
     print(link['src'])
 
     r = requests.get(link['src'])
-    with open('img/'+link['src'].split('/')[-1],'wb') as file:
+    with open('img/' + link['src'].split('/')[-1], 'wb') as file:
         file.write(r.content)
-

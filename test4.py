@@ -8,7 +8,7 @@ url = 'http://www.yurugp.jp/ranking/?year=2018'
 r = requests.get(url)
 soup = BeautifulSoup(r.text, 'lxml')
 rank_links = soup.find_all('option', value=re.compile(r'rank=\d+_\d{3}&year=20\d{2}'))
-rank_links_unique = list(set(rank_links))
+rank_links_unique = list(set(rank_links)) #重複を削除
 
 for link in rank_links_unique:
     print(link.get('value'))
